@@ -1,17 +1,20 @@
-package com.zhendless.shiftwallpaper
+package com.zhendless.shiftwallpaper.activity
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-
+import android.view.WindowManager
+import com.zhendless.shiftwallpaper.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD)
+        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
