@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">ShiftWallPaper</string>
     <string name="action_settings">Settings</string>
+    <string name="cancel">Cancel</string>
+
+
+    <string name="dialog_button_ok">OK</string>
+    <string name="dialog_tips_is_permission">Permission Required</string>
+    <string name="dialog_button_cancel">@string/cancel</string>
+
+
+    <string name="is_permission_rationale_read_storage">Storage read permission is required to load the images.</string>
+    <string name="is_permission_rationale_write_storage">Storage write permission is required to save the image.</string>
+    <string name="is_permission_rationale_read_and_write_storage">Storage permission is required to load the data.\nPlease open it in the Settings.</string>
+
+    <string name="toast_permission_write_storage_is_needed">Write storage permission is needed!</string>
 </resources>
