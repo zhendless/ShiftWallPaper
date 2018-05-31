@@ -4,30 +4,51 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+def cmd = 'git rev-list HEAD --first-parent --count'
+def gitVersion = cmd.execute().text.trim().toInteger()
+
 android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.zhendless.shiftwallpaper"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 1
+        versionCode gitVersion
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "release"
+
+    productFlavors {
+        dev {
+            applicationId "com.zhendless.shiftwallpaper.dev"
+            dimension "release"
+            manifestPlaceholders = [CHANNEL    : "PGY-Dev",
+                                    APP_VERSION: defaultConfig.versionName]
+        }
+        google_play {
+            applicationId "com.zhendless.shiftwallpaper"
+            dimension "release"
+            manifestPlaceholders = [CHANNEL    : "GooglePlay",
+                                    APP_VERSION: defaultConfig.versionName]
+        }
+    }
+
 }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.android.support:design:27.1.1'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.google.firebase:firebase-core:16.0.0'
 }

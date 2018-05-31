@@ -1,21 +1,21 @@
 package com.zhendless.shiftwallpaper.activity
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.MotionEvent
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.VideoView
-import com.zhendless.shiftwallpaper.R
-import android.media.MediaMetadataRetriever
 import android.widget.ImageView
+import android.widget.VideoView
 import com.zhendless.shiftwallpaper.Constant
+import com.zhendless.shiftwallpaper.R
 import com.zhendless.shiftwallpaper.util.FileUtil
 import com.zhendless.shiftwallpaper.util.ToastUtil
 import java.io.File
 
 
-class MainActivity : BaseActivity(), View.OnTouchListener {
+class LockScreenActivity : BaseActivity(), View.OnTouchListener {
 
     private var videoView: VideoView? = null
     private var imageView: ImageView? = null
@@ -27,9 +27,8 @@ class MainActivity : BaseActivity(), View.OnTouchListener {
         window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_lock_screen)
         checkPermissionWriteExternalStorage()
-
     }
 
     override fun onWriteExternalStorageGranted() {
@@ -50,17 +49,24 @@ class MainActivity : BaseActivity(), View.OnTouchListener {
         videoView?.setOnCompletionListener { finish() }
         videoView?.suspend()
         videoView?.setOnTouchListener(this)
+
+//        getFirstFrame(videoFilePath)
+        videoView?.start()
+        Handler().postDelayed({ videoView?.suspend() }, 700)
+    }
+
+    private fun getFirstFrame(videoFilePath: String) {
         /**
          * MediaMetadataRetriever class provides a unified interface for retrieving
          * frame and meta data from an input media file.
          */
-        val mmr = MediaMetadataRetriever()
-        mmr.setDataSource(videoFilePath)
-
-        val bitmap = mmr.frameAtTime//获取第一帧图片
-        imageView = findViewById<ImageView>(R.id.image_view_first_frame)
-        imageView?.setImageBitmap(bitmap)
-        mmr.release()//释放资源
+//        val mmr = MediaMetadataRetriever()
+//        mmr.setDataSource(videoFilePath)
+//
+//        val bitmap = mmr.frameAtTime//获取第一帧图片
+//        imageView = findViewById<ImageView>(R.id.image_view_first_frame)
+//        imageView?.setImageBitmap(bitmap)
+//        mmr.release()//释放资源
     }
 
     private fun copyFile() {
@@ -79,13 +85,7 @@ class MainActivity : BaseActivity(), View.OnTouchListener {
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         return when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
-                if (isVideoStarted) {
-                    videoView?.resume()
-                } else {
-                    imageView?.visibility = View.INVISIBLE
-                    videoView?.start()
-                    isVideoStarted = true
-                }
+                videoView?.resume()
                 true
             }
 

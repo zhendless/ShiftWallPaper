@@ -8,7 +8,7 @@ import android.content.IntentFilter
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
-import com.zhendless.shiftwallpaper.activity.MainActivity
+import com.zhendless.shiftwallpaper.activity.LockScreenActivity
 
 
 class LockScreenService : Service() {
@@ -41,7 +41,7 @@ class LockScreenService : Service() {
 
             if (intent != null && intent.action == Intent.ACTION_SCREEN_OFF) {
                 Log.d(TAG, "received action which action_screen_off!")
-                val lockScreen = Intent(this@LockScreenService, MainActivity::class.java)
+                val lockScreen = Intent(this@LockScreenService, LockScreenActivity::class.java)
                 lockScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(lockScreen)
             }
